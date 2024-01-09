@@ -2,6 +2,7 @@
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
+import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 
 mongoose.connect(process.env.MONGODB_URI!);
@@ -13,7 +14,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+// Express routes
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(7000, () => {
   console.log("server started on port 7000");
