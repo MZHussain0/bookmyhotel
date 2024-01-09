@@ -2,6 +2,7 @@
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
+import userRoutes from "./routes/userRoutes";
 
 mongoose.connect(process.env.MONGODB_URI!);
 
@@ -12,9 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get("/api/test", async (req, res) => {
-  res.json({ message: "hello from express" });
-});
+app.use("/api/users", userRoutes);
 
 app.listen(7000, () => {
   console.log("server started on port 7000");
