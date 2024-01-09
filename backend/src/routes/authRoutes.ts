@@ -2,10 +2,12 @@
 import express, { Request, Response } from "express";
 import { check, validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import verifyToken from "../middlewares/auth";
 import User from "../models/UserModel";
 
 const router = express.Router();
 
+// LOGIN - POST
 router.post(
   "/login",
 
@@ -23,7 +25,7 @@ router.post(
     const { email, password } = req.body;
 
     try {
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: email.toLowerCase() });
       if (!user) {
         return res.status(400).json({ error: "Invalid credentials" });
       }
@@ -48,6 +50,15 @@ router.post(
       console.log("[AUTH_POST_LOGIN]", error);
       return res.status(500).json({ error: "Server error" });
     }
+  }
+);
+
+// VALIDATE TOKEN - GET
+router.get(
+  "/validate-token",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    res.status(200).send({ userId: req.userId });
   }
 );
 

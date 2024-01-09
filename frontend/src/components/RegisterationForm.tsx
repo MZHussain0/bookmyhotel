@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import * as z from "zod";
 import * as apiClient from "../api-client";
@@ -40,6 +41,7 @@ const formSchema = z
 export type RegisterFormData = z.infer<typeof formSchema>;
 
 const RegisterationForm = () => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,6 +56,7 @@ const RegisterationForm = () => {
   const mutation = useMutation(apiClient.register, {
     onSuccess: () => {
       toast.success("registeration successfull!");
+      navigate("/");
     },
     onError: (error: Error) => {
       console.log(error.message);
