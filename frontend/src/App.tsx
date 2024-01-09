@@ -5,6 +5,7 @@ import {
   Routes,
 } from "react-router-dom";
 import Layout from "./Layout/Layout";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -23,6 +24,14 @@ function App() {
           element={
             <Layout>
               <span>HomePage</span>
+            </Layout>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Layout>
+              <RegisterPage />
             </Layout>
           }
         />
