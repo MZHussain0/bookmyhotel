@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import RegisterPage from "./pages/RegisterPage";
+import SignInPage from "./pages/SignInPage";
 
 function App() {
   return (
@@ -32,6 +33,14 @@ function App() {
           element={
             <Layout>
               <RegisterPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Layout>
+              <SignInPage />
             </Layout>
           }
         />

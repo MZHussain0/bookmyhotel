@@ -1,9 +1,11 @@
 ﻿import { useAppContext } from "@/contexts/AppContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import SignoutButton from "./SignoutButton";
 import { Button } from "./ui/button";
 const Header = () => {
   const { isLoggedIn } = useAppContext();
-  console.log(isLoggedIn);
+  const navigate = useNavigate();
+
   return (
     <div className="bg-theme-500 py-6">
       <div className="container mx-auto flex items-center justify-between">
@@ -19,12 +21,12 @@ const Header = () => {
               <Link to={"/my-hotels"} className="text-theme-600 font-bold">
                 My Hotels
               </Link>
-              <Button className="text-theme-600 font-bold" onClick={() => {}}>
-                Sign Out
-              </Button>
+              <SignoutButton />
             </>
           ) : (
-            <Button className="text-theme-600 font-bold" onClick={() => {}}>
+            <Button
+              className="text-theme-600 font-bold"
+              onClick={() => navigate("/login")}>
               Sign In
             </Button>
           )}
