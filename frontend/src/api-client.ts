@@ -2,7 +2,7 @@
 import axios from "axios";
 import { LoginFormData } from "./components/SignInForm";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 // Registeration API
 export const register = async (formData: RegisterFormData) => {
