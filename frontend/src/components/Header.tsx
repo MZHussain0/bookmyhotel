@@ -14,15 +14,19 @@ const Header = () => {
         </span>
         <div className="flex space-x-2">
           {isLoggedIn ? (
-            <>
-              <Link to={"/my-bookings"} className="text-theme-600 font-bold">
+            <div className="flex items-center justify-center gap-x-4">
+              <Link
+                to={"/my-bookings"}
+                className="text-theme-600 font-semibold bg-theme-200 px-2 py-2 rounded-lg hover:bg-theme-300 duration-300">
                 My Bookings
               </Link>
-              <Link to={"/my-hotels"} className="text-theme-600 font-bold">
+              <Link
+                to={"/my-hotels"}
+                className="text-theme-600 font-semibold bg-theme-200 px-2 py-2 rounded-lg hover:bg-theme-300 duration-300">
                 My Hotels
               </Link>
               <SignoutButton />
-            </>
+            </div>
           ) : (
             <Button
               className="text-theme-600 font-bold"

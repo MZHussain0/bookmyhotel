@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import * as z from "zod";
 import * as apiClient from "../api-client";
@@ -110,12 +110,20 @@ const SignInForm = () => {
           )}
         />
 
-        <Button
-          type="submit"
-          disabled={!form.formState.isValid || form.formState.isSubmitting}
-          className="max-w-md w-full mx-auto text-xl bg-theme-400 hover:bg-theme-400/90 text-white">
-          Login
-        </Button>
+        <div className="flex items-center justify-between max-w-lg mx-auto w-full ">
+          <span className="text-theme-200 ">
+            <Link to="/register" className="hover:text-theme-100">
+              Don't have an account?{" "}
+              <span className="underline font-semibold">Register</span>
+            </Link>
+          </span>
+          <Button
+            type="submit"
+            disabled={!form.formState.isValid || form.formState.isSubmitting}
+            className="max-w-52 w-full  text-xl bg-theme-400 hover:bg-theme-400/90 text-white">
+            Login
+          </Button>
+        </div>
       </form>
     </Form>
   );
