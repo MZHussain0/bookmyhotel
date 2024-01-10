@@ -59,9 +59,9 @@ const SignInForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="grow flex flex-col gap-4 p-4 w-full  bg-slate-900 px-4 py-8 rounded-lg shadow-inner shadow-theme-200 max-w-2xl mx-auto">
-        <h2 className="text-3xl font-bold text-theme-100 py-4 text-center">
+        <h1 className="text-3xl font-bold text-theme-100 py-4 text-center">
           Login in to your account
-        </h2>
+        </h1>
 
         {/* email */}
         <FormField

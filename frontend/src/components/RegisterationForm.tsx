@@ -74,7 +74,7 @@ const RegisterationForm = () => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4">
-        <h2 className="text-3xl font-bold text-theme-100">Create an Account</h2>
+        <h1 className="text-3xl font-bold text-theme-100">Create an Account</h1>
         <div className="flex flex-col md:flex-row gap-4">
           {/* first name */}
           <FormField

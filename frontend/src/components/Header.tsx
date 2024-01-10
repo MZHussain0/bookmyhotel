@@ -1,10 +1,8 @@
 ﻿import { useAppContext } from "@/contexts/AppContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SignoutButton from "./SignoutButton";
-import { Button } from "./ui/button";
 const Header = () => {
   const { isLoggedIn } = useAppContext();
-  const navigate = useNavigate();
 
   return (
     <div className="bg-theme-500 py-6">
@@ -28,11 +26,11 @@ const Header = () => {
               <SignoutButton />
             </div>
           ) : (
-            <Button
-              className="text-theme-600 font-bold"
-              onClick={() => navigate("/login")}>
+            <Link
+              to={"/login"}
+              className="text-theme-200 bg-theme-900 hover:bg-theme-800 font-bold px-4 py-2 rounded-lg duration-300">
               Sign In
-            </Button>
+            </Link>
           )}
         </div>
       </div>
