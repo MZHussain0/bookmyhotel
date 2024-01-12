@@ -1,5 +1,6 @@
 ﻿import { RegisterFormData } from "@/components/RegisterationForm";
 import axios from "axios";
+
 import { LoginFormData } from "./components/SignInForm";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -33,7 +34,7 @@ export const register = async (formData: RegisterFormData) => {
   }
 };
 
-// Registeration API
+// Login API
 export const login = async (formData: LoginFormData) => {
   try {
     const response = await axios.post(
@@ -111,6 +112,30 @@ export const logout = async () => {
         console.error("Non-Axios error:", error);
         throw new Error("An unexpected error occurred");
       }
+    }
+  }
+};
+
+// POST  HotelData API
+export const addHotel = async (hotelFormData: FormData) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/my-hotels`,
+      hotelFormData,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || "An unknown error occurred";
+      throw new Error(message);
+    } else {
+      // Log the error or handle as needed
+      console.error("Non-Axios error:", error);
+      throw new Error("An unexpected error occurred");
     }
   }
 };
