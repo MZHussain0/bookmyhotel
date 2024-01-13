@@ -3,7 +3,8 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import multer from "multer";
 import verifyToken from "../middlewares/auth";
-import Hotel, { HotelType } from "../models/HotelModel";
+import Hotel from "../models/HotelModel";
+import { HotelType } from "../shared/types";
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5, // 5MB
   },
 });
-// /api/my-hotel (POST)
+// /api/my-hotels (POST)
 router.post(
   "/",
   verifyToken,
@@ -71,6 +72,17 @@ router.post(
     }
   }
 );
+
+// /api/my-hotels (GET)
+router.get("/", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const hotels = await Hotel.find({ userId: req.userId });
+    res.status(200).send(hotels);
+  } catch (error) {
+    console.log("[MY_HOTEL_GET]", error);
+    res.status(500).json({ message: "Error fetching hotels" });
+  }
+});
 
 async function uploadImages(imageFiles: Express.Multer.File[]) {
   const uploadPromises = imageFiles.map(async (image) => {

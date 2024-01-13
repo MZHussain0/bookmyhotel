@@ -1,6 +1,6 @@
 ﻿import { RegisterFormData } from "@/components/RegisterationForm";
 import axios from "axios";
-
+import { HotelType } from "../../backend/src/shared/types";
 import { LoginFormData } from "./components/SignInForm";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -126,6 +126,29 @@ export const addHotel = async (hotelFormData: FormData) => {
         withCredentials: true,
       }
     );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || "An unknown error occurred";
+      throw new Error(message);
+    } else {
+      // Log the error or handle as needed
+      console.error("Non-Axios error:", error);
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};
+
+// GET  HotelData API
+export const fetchMyHotels = async (): Promise<HotelType[]> => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/my-hotels`, {
+      withCredentials: true,
+    });
+    if (!response.data) {
+      throw new Error("Error fetching hotels");
+    }
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

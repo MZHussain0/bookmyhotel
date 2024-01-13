@@ -7,6 +7,7 @@ import {
 import Layout from "./Layout/Layout";
 import { useAppContext } from "./contexts/AppContext";
 import AddHotelPage from "./pages/AddHotelPage";
+import MyHotelPage from "./pages/MyHotelPage";
 import RegisterPage from "./pages/RegisterPage";
 import SignInPage from "./pages/SignInPage";
 
@@ -55,6 +56,14 @@ function App() {
               element={
                 <Layout>
                   <AddHotelPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/my-hotels"
+              element={
+                <Layout>
+                  <MyHotelPage />
                 </Layout>
               }
             />
