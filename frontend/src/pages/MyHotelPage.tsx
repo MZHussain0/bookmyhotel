@@ -1,6 +1,5 @@
 ﻿import * as apiClient from "@/api-client";
 import HotelCard from "@/components/HotelCard";
-import MyHotels from "@/components/MyHotels";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -33,7 +32,6 @@ const MyHotelPage = () => {
           </div>
         ))}
       </div>
-      <MyHotels />
     </div>
   );
 };

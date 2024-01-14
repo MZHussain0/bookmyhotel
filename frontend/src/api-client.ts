@@ -162,3 +162,55 @@ export const fetchMyHotels = async (): Promise<HotelType[]> => {
     }
   }
 };
+
+// GET Fetch HotelData by ID API
+export const fetchMyHotelById = async (id: string): Promise<HotelType> => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/my-hotels/${id}`, {
+      withCredentials: true,
+    });
+    if (!response.data) {
+      throw new Error("Error fetching hotel");
+    }
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || "An unknown error occurred";
+      throw new Error(message);
+    } else {
+      // Log the error or handle as needed
+      console.error("Non-Axios error:", error);
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};
+
+// PUT Update HotelData API
+export const updateHotel = async (
+  hotelFormData: FormData
+): Promise<HotelType> => {
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/api/my-hotels/${hotelFormData.get("hotelId")}`,
+      hotelFormData,
+      {
+        withCredentials: true,
+      }
+    );
+    if (!response.data) {
+      throw new Error("Error updating hotel");
+    }
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || "An unknown error occurred";
+      throw new Error(message);
+    } else {
+      // Log the error or handle as needed
+      console.error("Non-Axios error:", error);
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};

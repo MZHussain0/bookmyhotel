@@ -53,7 +53,7 @@ const HotelCard = ({ hotel }: Props) => {
         </Button>
       </CardContent>
       <CardFooter className="flex justify-end">
-        <Link to={`/edit-hotel/${hotel._id}}`}>
+        <Link to={`/edit-hotel/${hotel._id}`}>
           <Button className="bg-theme-300 hover:bg-theme-300/90 text-white font-semibold">
             View Details
           </Button>

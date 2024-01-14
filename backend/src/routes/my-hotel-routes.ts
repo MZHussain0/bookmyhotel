@@ -84,6 +84,91 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
+// /api/my-hotels/:id (GET)
+router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const hotel = await Hotel.findOne({
+      _id: req.params.id,
+      userId: req.userId,
+    });
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+    res.status(200).send(hotel);
+  } catch (error) {
+    console.log("[MY_HOTEL_GET_BY_ID]", error);
+    res.status(500).json({ message: "Error fetching hotel" });
+  }
+});
+
+// /api/my-hotels/:id (PUT) - update hotel
+router.put(
+  "/:id",
+  verifyToken,
+  [
+    body("name").notEmpty().withMessage("Name is required"),
+    body("city").notEmpty().withMessage("City is required"),
+    body("country").notEmpty().withMessage("Country is required"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("type").notEmpty().withMessage("Type is required"),
+    body("adultCount")
+      .notEmpty()
+      .isNumeric()
+      .withMessage("Adult count is required and must be a number"),
+    body("childCount")
+      .notEmpty()
+      .isNumeric()
+      .withMessage("Child count is required and must be a number"),
+    body("facilities")
+      .notEmpty()
+      .isArray()
+      .withMessage("Facilities is required"),
+    body("pricePerNight")
+      .notEmpty()
+      .isNumeric()
+      .withMessage("Price per night is required and must be a number"),
+    body("starRating")
+      .notEmpty()
+      .isNumeric()
+      .withMessage("Star rating is required and must be a number"),
+  ],
+  upload.array("imageFiles", 6),
+  async (req: Request, res: Response) => {
+    try {
+      const imageFiles = req.files as Express.Multer.File[];
+      const updatedHotel: HotelType = req.body;
+      const hotelId = req.params.id.toString();
+
+      //1. Upload images to cloudinary
+      const imageUrls = await uploadImages(imageFiles);
+
+      // 2 if success, add urls to newHotels
+      updatedHotel.imageUrls = [
+        ...imageUrls,
+        ...(updatedHotel.imageUrls || []),
+      ];
+      updatedHotel.lastUpdated = new Date();
+
+      // 3. Update hotel in database
+      const hotel = await Hotel.findOneAndUpdate(
+        { _id: hotelId, userId: req.userId },
+        updatedHotel,
+        { new: true }
+      );
+
+      if (!hotel) {
+        return res.status(404).json({ message: "Hotel not found" });
+      }
+      await hotel.save();
+      // 4. Send response with newHotels. status 201
+      return res.status(201).send(hotel);
+    } catch (error) {
+      console.log("[MY_HOTEL_PUT]", error);
+      res.status(500).json({ message: "Something went wrong" });
+    }
+  }
+);
+
 async function uploadImages(imageFiles: Express.Multer.File[]) {
   const uploadPromises = imageFiles.map(async (image) => {
     const b64 = Buffer.from(image.buffer).toString("base64");

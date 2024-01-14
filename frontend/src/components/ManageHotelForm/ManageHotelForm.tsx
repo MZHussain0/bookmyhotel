@@ -2,6 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { HotelType } from "../../../../backend/src/shared/types";
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import DetailedSection from "./DetailedSection";
@@ -12,6 +13,8 @@ import TypeSection from "./TypeSection";
 
 type Props = {
   onSave: (hotelFormData: FormData) => void;
+  hotel?: HotelType;
+  hotelId?: string;
 };
 
 const formSchema = z.object({
@@ -53,27 +56,43 @@ const formSchema = z.object({
 
 export type ManageHotelFormData = z.infer<typeof formSchema>;
 
-const ManageHotelForm = ({ onSave }: Props) => {
+const ManageHotelForm = ({ onSave, hotel, hotelId }: Props) => {
+  console.log(hotelId);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "d",
-      city: "d",
-      country: "d",
-      description: "d",
-      pricePerNight: 1,
-      starRating: "1",
-      type: "Hostel",
-      facilities: ["spa"],
-      adultCount: 1,
-      childCount: 0,
-      imageFiles: [],
-    },
+    // defaultValues: {
+    //   name: "d",
+    //   city: "d",
+    //   country: "d",
+    //   description: "d",
+    //   pricePerNight: 1,
+    //   starRating: "1",
+    //   type: "Hostel",
+    //   facilities: ["spa"],
+    //   adultCount: 1,
+    //   childCount: 0,
+    //   imageFiles: [],
+    // },
+    defaultValues: hotel
+      ? {
+          ...hotel,
+          starRating: hotel.starRating.toString() as
+            | "1"
+            | "2"
+            | "3"
+            | "4"
+            | "5",
+        }
+      : undefined,
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     const formData = new FormData();
+
+    if (hotel) {
+      formData.append("hotelId", hotel?._id.toString());
+    }
     formData.append("name", values.name);
     formData.append("city", values.city);
     formData.append("country", values.country);
@@ -83,6 +102,12 @@ const ManageHotelForm = ({ onSave }: Props) => {
     formData.append("type", values.type);
     formData.append("adultCount", values.adultCount.toString());
     formData.append("childCount", values.childCount.toString());
+
+    // if (hotel?.imageUrls) {
+    //   hotel.imageUrls.forEach((imageFile) =>
+    //     formData.append(`imageFiles`, imageFile)
+    //   );
+    // }
 
     values.imageFiles.forEach((imageFile) =>
       formData.append(`imageFiles`, imageFile)
@@ -98,15 +123,16 @@ const ManageHotelForm = ({ onSave }: Props) => {
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4">
-        <h1 className="text-3xl font-bold text-theme-100">Register a hotel</h1>
+        <h1 className="text-3xl font-bold text-theme-100">
+          {hotelId ? "Edit a hotel" : "Register a hotel"}
+        </h1>
         <div className=" flex flex-col gap-4">
           <DetailedSection />
           <TypeSection />
           <FacilitiesSection />
           <GuestSection />
-          <ImagesSection />
+          <ImagesSection existingImageUrls={hotel?.imageUrls} />
         </div>
-
         <Button
           type="submit"
           disabled={!form.formState.isValid || form.formState.isSubmitting}
@@ -117,7 +143,11 @@ const ManageHotelForm = ({ onSave }: Props) => {
                 !form.formState.isValid || form.formState.isSubmitting,
             }
           )}>
-          Add Hotel
+          {hotelId && form.formState.isSubmitting
+            ? "Saving..."
+            : hotelId
+            ? "Edit Hotel"
+            : "Add Hotel"}
         </Button>
       </form>
     </Form>

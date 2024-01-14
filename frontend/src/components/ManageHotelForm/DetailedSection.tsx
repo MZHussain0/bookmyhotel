@@ -19,12 +19,12 @@ import {
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { ManageHotelFormData } from "./ManageHotelForm";
-
 const DetailedSection = () => {
   const {
     register,
     formState: { errors },
   } = useFormContext<ManageHotelFormData>();
+
   return (
     <>
       <h1 className="font-bold pt-8 text-2xl text-theme-300">Hotel Details</h1>

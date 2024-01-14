@@ -7,6 +7,7 @@ import {
 import Layout from "./Layout/Layout";
 import { useAppContext } from "./contexts/AppContext";
 import AddHotelPage from "./pages/AddHotelPage";
+import { EditHotel } from "./pages/EditHotel";
 import MyHotelPage from "./pages/MyHotelPage";
 import RegisterPage from "./pages/RegisterPage";
 import SignInPage from "./pages/SignInPage";
@@ -64,6 +65,14 @@ function App() {
               element={
                 <Layout>
                   <MyHotelPage />
+                </Layout>
+              }
+            />
+            <Route
+              path="/edit-hotel/:hotelId"
+              element={
+                <Layout>
+                  <EditHotel />
                 </Layout>
               }
             />
