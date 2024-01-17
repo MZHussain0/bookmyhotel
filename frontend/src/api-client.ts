@@ -1,6 +1,9 @@
 ﻿import { RegisterFormData } from "@/components/RegisterationForm";
 import axios from "axios";
-import { HotelType } from "../../backend/src/shared/types";
+import {
+  HotelSearchResponseType,
+  HotelType,
+} from "../../backend/src/shared/types";
 import { LoginFormData } from "./components/SignInForm";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
@@ -200,6 +203,64 @@ export const updateHotel = async (
     );
     if (!response.data) {
       throw new Error("Error updating hotel");
+    }
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || "An unknown error occurred";
+      throw new Error(message);
+    } else {
+      // Log the error or handle as needed
+      console.error("Non-Axios error:", error);
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};
+
+export type SearchParams = {
+  destination?: string;
+  checkIn?: string;
+  checkOut?: string;
+  adultCount?: string;
+  childCount?: string;
+  page?: string;
+  facilities?: string[];
+  types?: string[];
+  stars?: string[];
+  maxPrice?: string;
+  sortOptions?: string;
+};
+
+// GET Search Hotels API
+export const searchListings = async (
+  params: SearchParams
+): Promise<HotelSearchResponseType> => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("destination", params.destination || "");
+  queryParams.append("checkIn", params.checkIn || "");
+  queryParams.append("checkOut", params.checkOut || "");
+  queryParams.append("adultCount", params.adultCount || "");
+  queryParams.append("childCount", params.childCount || "");
+  queryParams.append("page", params.page || "");
+  queryParams.append("maxPrice", params.maxPrice || "");
+  queryParams.append("sortOptions", params.sortOptions || "");
+
+  params.facilities?.forEach((facility) =>
+    queryParams.append("facilities", facility)
+  );
+  params.types?.forEach((type) => queryParams.append("types", type));
+  params.stars?.forEach((star) => queryParams.append("stars", star));
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/api/hotels/search?${queryParams.toString()}`,
+      {
+        params,
+        withCredentials: true,
+      }
+    );
+    if (!response.data) {
+      throw new Error("Error searching hotels");
     }
     return response.data;
   } catch (error) {

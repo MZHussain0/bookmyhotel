@@ -108,6 +108,7 @@ const ManageHotelForm = ({ onSave, hotel, hotelId }: Props) => {
     //     formData.append(`imageFiles`, imageFile)
     //   );
     // }
+    // FIX: imageFiles is not being appended to previous imageUrls
 
     values.imageFiles.forEach((imageFile) =>
       formData.append(`imageFiles`, imageFile)

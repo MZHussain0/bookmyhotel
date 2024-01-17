@@ -6,6 +6,7 @@ import express from "express";
 import mongoose from "mongoose";
 import path from "path";
 import authRoutes from "./routes/authRoutes";
+import hotelRoutes from "./routes/hotelRoutes";
 import myHotelRoutes from "./routes/my-hotel-routes";
 import userRoutes from "./routes/userRoutes";
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/my-hotels", myHotelRoutes);
+app.use("/api/hotels", hotelRoutes);
 
 // serve index.html file if it doesn't recognize the route
 app.get("*", (req, res) => {

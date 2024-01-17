@@ -17,5 +17,7 @@ const hotelSchema = new mongoose.Schema({
   lastUpdated: { type: Date, required: true },
 });
 
+hotelSchema.index({ name: "text", city: "text", country: "text" });
+
 const Hotel = mongoose.model<HotelType>("Hotel", hotelSchema);
 export default Hotel;

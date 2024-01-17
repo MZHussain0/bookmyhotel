@@ -32,13 +32,13 @@ const FacilitiesSection = () => {
                 className="flex flex-row items-start justify-end space-x-3 space-y-0 bg-muted-foreground/10 px-4 py-2 rounded-lg">
                 <FormControl>
                   <Checkbox
-                    checked={field.value?.includes(item.id)}
+                    checked={field.value?.includes(item.label)}
                     onCheckedChange={(checked) => {
                       return checked
-                        ? field.onChange([...(field.value ?? []), item.id])
+                        ? field.onChange([...(field.value ?? []), item.label])
                         : field.onChange(
                             field.value?.filter(
-                              (value: string) => value !== item.id
+                              (value: string) => value !== item.label
                             )
                           );
                     }}

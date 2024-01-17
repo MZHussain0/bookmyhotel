@@ -10,6 +10,7 @@ import AddHotelPage from "./pages/AddHotelPage";
 import { EditHotel } from "./pages/EditHotel";
 import MyHotelPage from "./pages/MyHotelPage";
 import RegisterPage from "./pages/RegisterPage";
+import SearchPage from "./pages/SearchPage";
 import SignInPage from "./pages/SignInPage";
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
           path="/search"
           element={
             <Layout>
-              <span>HomePage</span>
+              <SearchPage />
             </Layout>
           }
         />

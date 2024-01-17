@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import App from "./App.tsx";
 import { ThemeProvider } from "./components/providers/ThemeProvider.tsx";
 import { AppContextProvider } from "./contexts/AppContext.tsx";
+import { SearchContextProvider } from "./contexts/searchContext.tsx";
 import "./index.css";
 
 const queryClient = new QueryClient({
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <QueryClientProvider client={queryClient}>
         <AppContextProvider>
-          <App />
+          <SearchContextProvider>
+            <App />
+          </SearchContextProvider>
         </AppContextProvider>
       </QueryClientProvider>
       <Toaster richColors={true} position="top-right" />
