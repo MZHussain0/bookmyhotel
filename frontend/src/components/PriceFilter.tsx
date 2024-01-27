@@ -36,7 +36,9 @@ const PriceFilter = ({ selectedPrice, onChange }: Props) => {
             </SelectGroup>
             <SelectItem value={"0"}>All</SelectItem>
             {[500, 1000, 1500, 2000, 2500, 3000].map((price) => (
-              <SelectItem value={price.toString()}>{price}</SelectItem>
+              <SelectItem key={price} value={price.toString()}>
+                {price}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>

@@ -275,3 +275,26 @@ export const searchListings = async (
     }
   }
 };
+
+// GET Fetch HotelData by ID API
+export const fetchHotelById = async (id: string): Promise<HotelType> => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/hotels/${id}`, {
+      withCredentials: true,
+    });
+    if (!response.data) {
+      throw new Error("Error fetching hotel");
+    }
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message || "An unknown error occurred";
+      throw new Error(message);
+    } else {
+      // Log the error or handle as needed
+      console.error("Non-Axios error:", error);
+      throw new Error("An unexpected error occurred");
+    }
+  }
+};

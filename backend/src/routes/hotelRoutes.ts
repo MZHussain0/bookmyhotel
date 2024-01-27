@@ -1,8 +1,11 @@
 ﻿import express, { Request, Response } from "express";
+import { param, validationResult } from "express-validator";
 import Hotel from "../models/HotelModel";
 import { HotelSearchResponseType } from "../shared/types";
 
 const router = express.Router();
+
+// /api/hotels/:id
 
 // /api/hotels/search?
 router.get("/search", async (req: Request, res: Response) => {
@@ -114,4 +117,22 @@ const constructSearchQuery = (queryParams: any) => {
 function escapeRegExp(string: string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
 }
+
+router.get(
+  "/:id",
+  [param("id").notEmpty().withMessage("Hotel ID is required")],
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const hotel = await Hotel.findById(req.params.id.toString());
+      res.status(200).json(hotel);
+    } catch (error) {
+      console.log("[HOTEL_DETAILS]: ", error);
+      res.status(500).json({ message: errors.array() });
+    }
+  }
+);
 export default router;
